@@ -67,7 +67,8 @@ public class JpaMain {
             // [detach] 특정 엔티티만 준영속 상태로 전환
 //            em.detach(member); // 2-1) 영속성 상태의 엔티티를 영속성 컨텍스트로부터 분리시킴(detached)
             // [clear] 영속성 컨텍스트를 완전히 초기화
-//            em.clear(); // 2-2) 1차 캐시 통으로 지움 >> clear 이후에 다시 find로 조회 시, 완전히 새로운 영속성 컨텍스트가 올라가고 select 쿼리가 돎
+            em.clear(); // 2-2) 1차 캐시 통으로 지움 >> clear 이후에 다시 find로 조회 시, 완전히 새로운 영속성 컨텍스트가 올라가고 select 쿼리가 돎
+//            Member member2 = em.find(Member.class, 3L);
             // 3) JPA가 더이상 해당 엔티티를 관리하지 않음
             System.out.println("==============================");
             // 4) 결론적으로 find(select) 쿼리만 돌고 set(update) 쿼리는 돌지 않음
