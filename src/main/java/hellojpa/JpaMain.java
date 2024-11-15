@@ -74,27 +74,50 @@ public class JpaMain {
             // 4) 결론적으로 find(select) 쿼리만 돌고 set(update) 쿼리는 돌지 않음*/
 
             // 엔티티 매핑
-            Member member1 = new Member();
-//            member.setId("ID_A");
-            member1.setUsername("A");
+//            Member member1 = new Member();
+////            member.setId("ID_A");
+//            member1.setUsername("A");
+//
+//            Member member2 = new Member();
+//            member2.setUsername("B");
+//
+//            Member member3 = new Member();
+//            member3.setUsername("C");
+//
+//            System.out.println("=====================");
+//
+//            em.persist(member1); // 1, 51 (미리 51에서 100까지 확보해야 하므로 call next for member_seq 한번 더 호출 >> 총 2번 호출)
+//            em.persist(member2); // MEM
+//            em.persist(member3); // MEM
+//
+//            System.out.println("member1.getId() = " + member1.getId());
+//            System.out.println("member2.getId() = " + member2.getId());
+//            System.out.println("member3.getId() = " + member3.getId());
+//
+//            System.out.println("=====================");
 
-            Member member2 = new Member();
-            member2.setUsername("B");
+            // 1. 객체를 테이블에 맞춰 모델링 (외래키 식별자를 직접 다룸)
+            // 팀 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            Member member3 = new Member();
-            member3.setUsername("C");
+            // 회원 저장
+            Member2 member = new Member2();
+            member.setUsername("member1");
+//            member.setTeamId(team.getId());
+            member.setTeam(team); // 연관관계 저장
+            em.persist(member);
 
-            System.out.println("=====================");
+            Member2 findMember = em.find(Member2.class, member.getId());
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
 
-            em.persist(member1); // 1, 51 (미리 51에서 100까지 확보해야 하므로 call next for member_seq 한번 더 호출 >> 총 2번 호출)
-            em.persist(member2); // MEM
-            em.persist(member3); // MEM
+            // 조회 시 식별자로 다시 조회 >> 객체 지향적인 방법은 아님
+//            Long findTeamId = findMember.getTeamId();
+            // 연관관계가 없음
+//            Team findTeam = em.find(Team.class, findTeamId);
 
-            System.out.println("member1.getId() = " + member1.getId());
-            System.out.println("member2.getId() = " + member2.getId());
-            System.out.println("member3.getId() = " + member3.getId());
-
-            System.out.println("=====================");
 
             // commit
             tx.commit();
